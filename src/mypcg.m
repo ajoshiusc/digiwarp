@@ -2,8 +2,7 @@ function [x] = mypcg(A,b,Tol,Maxit,M,x,flags)
 if ~exist('flags','var')
     flags='';
 end
-%  flags=strrep(flags,'-','');
-%  a=strfind(flags,'v');
+
 if isempty(strfind(flags,'v'))    
      verbosity=2;
 else
@@ -51,9 +50,6 @@ for kk=1:NITER
     if rtz<Tol % no need to take abs(rtz) for this preconditioner
         break;
     end
-    if verbosity>1
-        disp1(sprintf('PCG: %d/%d',kk,NITER),'PCG',flags);
-    end
-end
-%disp(sprintf('Mypcg did %d iterations',i));
+    fprintf('.');
 
+end

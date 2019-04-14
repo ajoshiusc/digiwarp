@@ -1,16 +1,18 @@
-%||AUM||
-%clc;clear all;close all;
 function surf_atlas=assymetric_L2_surf_matching(surf_atlas,surf_sub)
 
-addpath '/home/ajoshi/sipi/my_functions/'
-addpath '/home/ajoshi/sipi/my_functions/mri_toolbox'
-addpath '/home/ajoshi/sipi/my_functions/ply'
+
 step_size=.05;
 lap_reg=8;
 L=loreta(surf_atlas);
 scrsz = get(0,'ScreenSize');
 
 figure;
+    fig=figure('Position',[1 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2])
+    set(gca,'xlim',[0 120]);axis equal;
+    h=patch(surf_atlas,'facecolor','g','edgecolor','none','facealpha',0.2);hold on;axis equal;axis off;camlight;drawnow;
+%patch(surf_sub,'facecolor','r','edgecolor','none','facealpha',0.2);drawnow;axis off;
+%plot3(surf_sub.vertices(:,1),surf_sub.vertices(:,2),surf_sub.vertices(:,3),'.r');
+    plot3(surf_sub.vertices(:,1),surf_sub.vertices(:,2),surf_sub.vertices(:,3),'.r','MarkerSize',2.0);
 
 for kk=1:150
 tic
@@ -45,17 +47,16 @@ clear dat row col
     vy=mypcg(L1'*L1,L1'*by,1e-100,300,M);
     vz=mypcg(L1'*L1,L1'*bz,1e-100,300,M);
 
-   close all; figure('Position',[1 scrsz(4)/2 scrsz(3)/2 scrsz(4)/2])
-    set(gca,'xlim',[0 120]);axis equal;
+    delete(h)
 
 %figure;
-    patch(surf_atlas,'facecolor','g','edgecolor','none','facealpha',0.2);hold on;axis equal;axis off;camlight;drawnow;
+    h=patch(surf_atlas,'facecolor','g','edgecolor','none','facealpha',0.2);hold on;%axis equal;axis off;camlight;drawnow;
 %patch(surf_sub,'facecolor','r','edgecolor','none','facealpha',0.2);drawnow;axis off;
 %plot3(surf_sub.vertices(:,1),surf_sub.vertices(:,2),surf_sub.vertices(:,3),'.r');
-    plot3(surf_sub.vertices(:,1),surf_sub.vertices(:,2),surf_sub.vertices(:,3),'.r','MarkerSize',2.0);
-    drawnow;axis off;drawnow;
+ %   plot3(surf_sub.vertices(:,1),surf_sub.vertices(:,2),surf_sub.vertices(:,3),'.r','MarkerSize',2.0);
+  %  drawnow;axis off;drawnow;
 
-    F(kk)=getframe;
+  %  F(kk)=getframe;
 % quiver3(surf_atlas.vertices(:,1),surf_atlas.vertices(:,2),surf_atlas.vertices(:,3),vx,vy,vz);
 % 
 % quiver3(surf_atlas.vertices(vec_atlas_pts,1),surf_atlas.vertices(vec_atlas_pts,2),surf_atlas.vertices(vec_atlas_pts,3),vec_atlas2sub(:,1),vec_atlas2sub(:,2),vec_atlas2sub(:,3),'r');
@@ -67,7 +68,7 @@ clear dat row col
 %save intermedi_mouse_warp2_new
 end
 
-save tmpF F;
+%save tmpF F;
 
 % movie(F,100);
  

@@ -50,9 +50,8 @@ disp(sprintf('it is %g close',max(abs(nrm(:)))));
 
 surf_atlas_warped=assymetric_L2_surf_matching(surf_atlas_repositioned,surf_sub);
 
-def_surf=def_surf_reqd./nsteps;
+def_surf=def_surf_reqd;
 tetmesh_orig=tetmesh;
-for jj=1:nsteps
 
 K=myelastic_E_tet(tetmesh,.3,1);
 
@@ -107,7 +106,7 @@ tetmesh=tetmesh2;
 
 save(sprintf('tetmesh_%s',jj), 'tetmesh');
 
-end
+
 
 vi=v1;
 Msize=size(vi.img);vi.img=0*vi.img;
