@@ -1,10 +1,16 @@
-function h=view_patch(FV1)
+function h=view_patch(FV1,newfig)
 %function view_patch(FV)
 %FV: a tessellation to view
 %
 %copywrite Dimitrios Pantazis, PhD student, USC
 
-h=figure;
+if ~exist('newfig','var')
+    h=figure;
+else
+    if newfig~=0
+        h=figure;
+    end
+end
 %camlight
 %lighting gouraud
 axis equal

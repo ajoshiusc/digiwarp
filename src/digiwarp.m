@@ -8,28 +8,26 @@ v1=avw_read(fname1);
 % Load and downsample atlas;
 v1=downsample_zeropad_img(v1,DS,DS,DS,pad);res=v1.hdr.dime.pixdim(2:4);
 tet=load(atlas_tet_mat);
-fxed_pts_atlas=dsearchn(tet.r_hull,pts_atlas);
-fxed_pts_sub = dsearchn(surf_sub_vertices,pts_sub);
-%fxed_pts_atlas=[6939,5632];%,966];
-%fxed_pts_sub=[4454,3517];%,5529];
 
-
-disp('The following numbers should be close to 0, which will show match to atlas');
-tet.r_hull(fxed_pts_atlas,:)-pts_atlas
-
-
-disp('The following numbers should be close to 0, which will show match to subject');
-surf_sub_vertices(fxed_pts_sub,:)-pts_sub
-
+if ~isempty(pts_atlas)
+    fxed_pts_atlas=dsearchn(tet.r_hull,pts_atlas);
+    fxed_pts_sub = dsearchn(surf_sub_vertices,pts_sub);
+      
+    disp('The following numbers should be close to 0, which will show match to atlas');
+    tet.r_hull(fxed_pts_atlas,:)-pts_atlas
+    
+    disp('The following numbers should be close to 0, which will show match to subject');
+    surf_sub_vertices(fxed_pts_sub,:)-pts_sub
+end
 
 tet.r(:,1)=tet.r(:,1)+pad*res(1);tet.r_hull(:,1)=tet.r_hull(:,1)+pad*res(1);
 tet.r(:,2)=tet.r(:,2)+pad*res(2);tet.r_hull(:,2)=tet.r_hull(:,2)+pad*res(2);
 tet.r(:,3)=tet.r(:,3)+pad*res(3);tet.r_hull(:,3)=tet.r_hull(:,3)+pad*res(3);
 
-tet.r=[tet.r(:,2),tet.r(:,1),tet.r(:,3)];tet.r_hull=[tet.r_hull(:,2),tet.r_hull(:,1),tet.r_hull(:,3)];
+%tet.r=[tet.r(:,2),tet.r(:,1),tet.r(:,3)];tet.r_hull=[tet.r_hull(:,2),tet.r_hull(:,1),tet.r_hull(:,3)];
 
 
-
+def_surf_reqd=0;
 tetmesh.vertices=tet.r;tetmesh.faces=double(tet.T);
 tetmesh.label=tet.cond;
 
@@ -37,12 +35,14 @@ surf_atlas.faces=double(tet.S_hull);
 surf_atlas.vertices=tet.r_hull;
 view_patch(surf_atlas);
 
-
-def_fxed_pts=surf_sub_vertices(fxed_pts_sub,:)-surf_atlas.vertices(fxed_pts_atlas,:);
-
-def_surf_reqd=surf_disp_from_fxedpts(surf_atlas,fxed_pts_atlas,def_fxed_pts);
-plot(def_surf_reqd);
+if ~isempty(pts_atlas)
+    
+    def_fxed_pts=surf_sub_vertices(fxed_pts_sub,:)-surf_atlas.vertices(fxed_pts_atlas,:);
+    
+    def_surf_reqd=surf_disp_from_fxedpts(surf_atlas,fxed_pts_atlas,def_fxed_pts);
+end
 surf_atlas_repositioned.faces=surf_atlas.faces;
+
 surf_atlas_repositioned.vertices=surf_atlas.vertices+def_surf_reqd;
 view_patch(surf_atlas);
 view_patch(surf_atlas_repositioned);
@@ -179,7 +179,7 @@ ypyd=min(max(y+yd,1),Msize(2));
 zpzd=min(max(z+zd,1),Msize(3));
 vi.img=interp3(v1.img,ypyd,xpxd,zpzd,interp_method);
 vi.hdr=v1.hdr;
-avw_write(vi,fullfile(outdir,'warped_atlas'));
+avw_write(vi,fullfile(outdir,'warped_atlas.nii.gz'));
 
 %tetmesh.label=cond;
 plot_tet_label_mesh(tetmesh);

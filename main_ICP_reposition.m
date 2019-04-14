@@ -7,16 +7,18 @@ addpath(genpath('src'));
 atlas_tet_mat='/deneb_disk/mouse_reg_FEM/DigiMouse/tesselated_atlas/Tesselated_Atlas.mat';
 surf_file = '/home/ajoshi/coding_ground/digiwarp/sample_data/mouse_pts2q.res1.dfs';
 
-%% The code will render the surfaces of subject and the atlas.
-%% Tools->Data cursor. Then click on the points in the two surfaces that you think should correspond.
-%% Click 2-3 points.
+
+% The following code loads subject surface points and atlas surface points,
+% and then rigidly repositions the subject surface to match the atlas surface
 
 surf_sub=readdfs(surf_file);surf_sub_vertices = surf_sub.vertices;
 
+% Swapping dimensions might work better some times than ICP only
+surf_sub_vertices=[surf_sub_vertices(:,2),surf_sub_vertices(:,1),surf_sub_vertices(:,3)];
 
 % Load and display the atlas
 load(atlas_tet_mat);
-r_hull=[r_hull(:,2),r_hull(:,1),r_hull(:,3)];
+%r_hull=[r_hull(:,2),r_hull(:,1),r_hull(:,3)];
 
 surf_atlas.faces=double(S_hull);
 surf_atlas.vertices=r_hull;
@@ -26,32 +28,21 @@ fig=figure;
 plot3(surf_sub_vertices(:,1),surf_sub_vertices(:,2),surf_sub_vertices(:,3),'.g','MarkerSize',5.0);axis off;axis equal;axis tight;
 set(gcf,'color','white');
 title('Subject before ICP');
-hold on;view_patch(surf_atlas);axis off;
+hold on;view_patch(surf_atlas,0);axis off;
 
 
 
-[Ricp Ticp ER t] = icp(r_hull', surf_sub_vertices', 50);
+[Ricp Ticp ER t] = icp(r_hull', surf_sub_vertices', 150);
 surf_sub_vertices = Ricp * surf_sub_vertices' + Ticp;
 surf_sub_vertices=surf_sub_vertices';
 
 fig=figure;
-plot3(surf_sub_vertices(:,1),surf_sub_vertices(:,2),surf_sub_vertices(:,3),'.k','MarkerSize',5.0);axis off;axis equal;axis tight;
+plot3(surf_sub_vertices(:,1),surf_sub_vertices(:,2),surf_sub_vertices(:,3),'.g','MarkerSize',5.0);axis off;axis equal;axis tight;
 set(gcf,'color','white');
 title('Subject after ICP on atlas');
 
-hold on;view_patch(surf_atlas);axis off;
+hold on;view_patch(surf_atlas,0);axis off;
 
 
-% Note down the points below
-%%%%% COPY THIS TO THE main_digiwarp script
-
-
-
-sub_pts=[45.807,-6.034,17.65;
-        84.40,-3.08, 16.03];
-    
-atlas_pts=[18.8,34,18.4;
-    19.24,17.38,16.8];
-
-
-
+% Save the ICP warped vertices.
+save('surf_sub_vertices.mat','surf_sub_vertices');
