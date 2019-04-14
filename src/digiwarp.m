@@ -1,14 +1,19 @@
-function digiwarp(surf_sub_vertices,atlas_tet_mat,fname1,pts_sub,pts_atlas)
+function digiwarp(surf_sub_vertices,atlas_tet_mat,fname1,pts_sub,pts_atlas,outdir,opts)
 
-pad=20;
-
+pad=opts.pad;
+interp_method=opts.interp_method;
+DS=opts.DS;
 v1=avw_read(fname1);
-%v1=resample_avw(v1,round(size(v1.img)/2));
-v1=downsample_zeropad_img(v1,2,2,2,pad);res=v1.hdr.dime.pixdim(2:4);
+
+% Load and downsample atlas;
+v1=downsample_zeropad_img(v1,DS,DS,DS,pad);res=v1.hdr.dime.pixdim(2:4);
 load(atlas_tet_mat);
 
 fxed_pts_atlas=dsearchn(r_hull,pts_atlas);
 fxed_pts_sub = dsearchn(surf_sub_vertices,pts_sub);
+%fxed_pts_atlas=[6939,5632];%,966];
+%fxed_pts_sub=[4454,3517];%,5529];
+
 
 disp('The following numbers should be close to 0, which will show match to atlas');
 r_hull(fxed_pts_atlas,:)-pts_atlas
@@ -23,6 +28,9 @@ r(:,2)=r(:,2)+pad*res(2);r_hull(:,2)=r_hull(:,2)+pad*res(2);
 r(:,3)=r(:,3)+pad*res(3);r_hull(:,3)=r_hull(:,3)+pad*res(3);
 
 r=[r(:,2),r(:,1),r(:,3)];r_hull=[r_hull(:,2),r_hull(:,1),r_hull(:,3)];
+
+
+
 tetmesh.vertices=r;tetmesh.faces=double(T);
 
 surf_atlas.faces=double(S_hull);
@@ -42,22 +50,16 @@ view_patch(surf_atlas_repositioned);
 
 ind1=dsearchn(tetmesh.vertices,surf_atlas.vertices);
 nrm=tetmesh.vertices(ind1,:)-surf_atlas.vertices;
-disp(sprintf('it is %g close',max(abs(nrm(:)))));
 
 
-surf_atlas_warped=assymetric_L2_surf_matching(surf_atlas_repositioned,surf_sub_vertices);
+surf_atlas_warped=assymetric_L2_surf_matching(surf_atlas_repositioned,surf_sub_vertices,opts.NIT);
 
-def_surf=def_surf_reqd;
+def_surf=surf_atlas_warped.vertices;%def_surf_reqd;
 tetmesh_orig=tetmesh;
 
 K=myelastic_E_tet(tetmesh,.3,1);
 
 
-% S=get_surf_tet(tetmesh.faces);
-% S=correct_orientation_tet(S,tetmesh.faces,tetmesh.vertices); p.faces=S;p.vertices=tetmesh.vertices;
-% figure;patch(p,'FaceColor','y','EdgeColor','none');axis equal;light; drawnow;
-%
-% surf_pts_ind = intersect(p.faces(:),tetmesh.faces(:));
 surf_pts_ind =ind1;
 
 N=length(tetmesh.vertices);
@@ -72,10 +74,8 @@ Kcf=Kcf(:,indf);
 
 Kff=K(indf,:);Kff=Kff(:,indf);
 
-%clear ind indf surf_pts_ind spts r r_hull
 
 M=(diag(Kff)+eps);
-%bb=-0.5*(Kfc+Kcf')*ones(size(Kfc,2),1);
 bb=-0.5*(Kfc+Kcf')*def_surf(:);
 sol=mypcg(Kff,bb,1e-232,30000,M);
 plot(sol);
@@ -101,7 +101,7 @@ patch(p2,'FaceColor','y','EdgeColor','none');axis equal;light; drawnow;
 drawnow;view(0,-90);
 tetmesh=tetmesh2;
 
-save(sprintf('tetmesh_%s',jj), 'tetmesh');
+save(fullfile(outdir,'tetmesh_warped.mat'), 'tetmesh');
 
 
 
@@ -120,18 +120,20 @@ tetmesh2.vertices(:,3)=tetmesh2.vertices(:,3)/res(3);
 T=tetmesh_orig.faces;r=tetmesh_orig.vertices;
 T1=cut_volume(T,r(:,2)-mean(r(:,2)),2.5);
 S=get_surf_tet(T1);
-S=correct_orientation_tet(S,T1,r); p.faces=S;p.vertices=r;figure;
-patch(p,'FaceColor','y','EdgeColor','none');axis equal;light;axis off; drawnow;view(0,0);
+S=correct_orientation_tet(S,T1,r); p.faces=S;p.vertices=r;
 
+figure;
+patch(p,'FaceColor','y','EdgeColor','none');axis equal;light;axis off; drawnow;view(0,0);
+title('Warped tetmesh');
 
 T=tetmesh2.faces;r=tetmesh2.vertices;
 T1=cut_volume(T,r(:,2)-mean(r(:,2)),2.5);
 S=get_surf_tet(T1);
-S=correct_orientation_tet(S,T1,r); p2.faces=S;p2.vertices=r;figure;
-patch(p2,'FaceColor','y','EdgeColor','none');axis equal;axis off;light; drawnow;view(0,0);
-drawnow;
+S=correct_orientation_tet(S,T1,r); p2.faces=S;p2.vertices=r;
 
-save tttt_2davis
+figure;
+patch(p2,'FaceColor','y','EdgeColor','none');axis equal;axis off;light; drawnow;view(0,0);
+drawnow;title('Warped atlas surface');
 
 
 tetmesh_orig.vertices(:,1)=max(min(tetmesh_orig.vertices(:,1),Msize(1)),1);
@@ -166,8 +168,7 @@ tetmesh2.vertices(:,3)=max(min(tetmesh2.vertices(:,3),Msize(3)),1);
 v1_mask_ind=find(v1.img>-10);
 disp_vec_mask=interp_disp_field_mask(tetmesh2,tetmesh_orig2,v1_mask_ind,Msize);
 xd=zeros(Msize);yd=xd;zd=xd;
-disp('done this');
-save test22
+disp('done computing deformation for the volume');
 xd(v1_mask_ind)=disp_vec_mask(:,1);
 yd(v1_mask_ind)=disp_vec_mask(:,2);
 zd(v1_mask_ind)=disp_vec_mask(:,3);
@@ -176,16 +177,14 @@ x=reshape(x,Msize);y=reshape(y,Msize);z=reshape(z,Msize);
 xpxd=min(max(x+xd,1),Msize(1));
 ypyd=min(max(y+yd,1),Msize(2));
 zpzd=min(max(z+zd,1),Msize(3));
-vi.img=interp3(v1.img,ypyd,xpxd,zpzd);
+vi.img=interp3(v1.img,ypyd,xpxd,zpzd,interp_method);
 vi.hdr=v1.hdr;
-avw_write(vi,'warped_atlas');
+avw_write(vi,fullfile(outdir,'warped_atlas'));
 
-save ttyty2
 tetmesh.label=cond;
 plot_tet_label_mesh(tetmesh);
+title('Warped atlas');
 
-%[x,y,z]=ind2sub(Msize,find(v1.img>-10));
-%vi.img(:)=y;
 avw_view(vi);
 
 
