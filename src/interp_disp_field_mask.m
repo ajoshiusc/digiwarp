@@ -11,33 +11,22 @@ zd(iind)=disp_vec(:,3);
 
 %[t,p]=mytsearchn(x,y,zz,tet,z,xin,yin,zzin,tnum,pc)
 
-[t,p]=tsearchn(tetmesh.vertices,tetmesh.faces,[x,y,z]);
+%[t,p]=tsearchn(tetmesh.vertices,tetmesh.faces,[x,y,z]);
+%tic
+%xd=mygriddata3_tet(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),tetmesh.faces,disp_vec(:,1),x,y,z,t,p);toc
+%yd=mygriddata3_tet(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),tetmesh.faces,disp_vec(:,2),x,y,z,t,p);toc
+%zd=mygriddata3_tet(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),tetmesh.faces,disp_vec(:,3),x,y,z,t,p);toc
 
- tic
-  xd=mygriddata3_tet(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),tetmesh.faces,disp_vec(:,1),x,y,z,t,p);toc
-  yd=mygriddata3_tet(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),tetmesh.faces,disp_vec(:,2),x,y,z,t,p);toc
-  zd=mygriddata3_tet(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),tetmesh.faces,disp_vec(:,3),x,y,z,t,p);toc
-
-% tic
-%  xd=griddata3(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,1),x,y,z,'nearest');toc
-%  yd=griddata3(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,2),x,y,z,'nearest');toc
-%  zd=griddata3(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,3),x,y,z,'nearest');toc
+tic
+xd=griddata(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,1),x,y,z);toc%,'linear');toc
+yd=griddata(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,2),x,y,z);toc%,'nearest');toc
+zd=griddata(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,3),x,y,z);toc%,'nearest');toc
+toc
 
 nanind=isnan(xd)|isnan(yd)|isnan(zd);
- xd(nanind)=griddata(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,1),x(nanind),y(nanind),z(nanind),'nearest');%100000;
- yd(nanind)=griddata(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,2),x(nanind),y(nanind),z(nanind),'nearest');%100000;
- zd(nanind)=griddata(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,3),x(nanind),y(nanind),z(nanind),'nearest');%100000;
+xd(nanind)=griddata(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,1),x(nanind),y(nanind),z(nanind),'nearest');%100000;
+yd(nanind)=griddata(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,2),x(nanind),y(nanind),z(nanind),'nearest');%100000;
+zd(nanind)=griddata(tetmesh.vertices(:,1),tetmesh.vertices(:,2),tetmesh.vertices(:,3),disp_vec(:,3),x(nanind),y(nanind),z(nanind),'nearest');%100000;
 
-%  yd(isnan(yd))=100000;
-%  zd(isnan(zd))=100000;
 disp_vec_mask=[xd,yd,zd];
-% 
-% function vi=interp_vol_tetmesh(v,tetmesh)
-% 
-% %v=avw_read(fname);
-% 
-% vi=interp3(v,tetmesh.vertices(:,2),tetmesh.vertices(:,1),tetmesh.vertices(:,3));
-% 
-% 
-% 
-% 
+

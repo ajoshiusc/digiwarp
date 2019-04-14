@@ -7,34 +7,34 @@ v1=avw_read(fname1);
 
 % Load and downsample atlas;
 v1=downsample_zeropad_img(v1,DS,DS,DS,pad);res=v1.hdr.dime.pixdim(2:4);
-load(atlas_tet_mat);
-
-fxed_pts_atlas=dsearchn(r_hull,pts_atlas);
+tet=load(atlas_tet_mat);
+fxed_pts_atlas=dsearchn(tet.r_hull,pts_atlas);
 fxed_pts_sub = dsearchn(surf_sub_vertices,pts_sub);
 %fxed_pts_atlas=[6939,5632];%,966];
 %fxed_pts_sub=[4454,3517];%,5529];
 
 
 disp('The following numbers should be close to 0, which will show match to atlas');
-r_hull(fxed_pts_atlas,:)-pts_atlas
+tet.r_hull(fxed_pts_atlas,:)-pts_atlas
 
 
 disp('The following numbers should be close to 0, which will show match to subject');
 surf_sub_vertices(fxed_pts_sub,:)-pts_sub
 
 
-r(:,1)=r(:,1)+pad*res(1);r_hull(:,1)=r_hull(:,1)+pad*res(1);
-r(:,2)=r(:,2)+pad*res(2);r_hull(:,2)=r_hull(:,2)+pad*res(2);
-r(:,3)=r(:,3)+pad*res(3);r_hull(:,3)=r_hull(:,3)+pad*res(3);
+tet.r(:,1)=tet.r(:,1)+pad*res(1);tet.r_hull(:,1)=tet.r_hull(:,1)+pad*res(1);
+tet.r(:,2)=tet.r(:,2)+pad*res(2);tet.r_hull(:,2)=tet.r_hull(:,2)+pad*res(2);
+tet.r(:,3)=tet.r(:,3)+pad*res(3);tet.r_hull(:,3)=tet.r_hull(:,3)+pad*res(3);
 
-r=[r(:,2),r(:,1),r(:,3)];r_hull=[r_hull(:,2),r_hull(:,1),r_hull(:,3)];
+tet.r=[tet.r(:,2),tet.r(:,1),tet.r(:,3)];tet.r_hull=[tet.r_hull(:,2),tet.r_hull(:,1),tet.r_hull(:,3)];
 
 
 
-tetmesh.vertices=r;tetmesh.faces=double(T);
+tetmesh.vertices=tet.r;tetmesh.faces=double(tet.T);
+tetmesh.label=tet.cond;
 
-surf_atlas.faces=double(S_hull);
-surf_atlas.vertices=r_hull;
+surf_atlas.faces=double(tet.S_hull);
+surf_atlas.vertices=tet.r_hull;
 view_patch(surf_atlas);
 
 
@@ -100,7 +100,7 @@ S=correct_orientation_tet(S,T1,r); p2.faces=S;p2.vertices=r;figure;
 patch(p2,'FaceColor','y','EdgeColor','none');axis equal;light; drawnow;
 drawnow;view(0,-90);
 tetmesh=tetmesh2;
-
+%tetmesh.label=double(cond);
 save(fullfile(outdir,'tetmesh_warped.mat'), 'tetmesh');
 
 
@@ -181,7 +181,7 @@ vi.img=interp3(v1.img,ypyd,xpxd,zpzd,interp_method);
 vi.hdr=v1.hdr;
 avw_write(vi,fullfile(outdir,'warped_atlas'));
 
-tetmesh.label=cond;
+%tetmesh.label=cond;
 plot_tet_label_mesh(tetmesh);
 title('Warped atlas');
 
