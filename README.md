@@ -11,7 +11,7 @@ Start with main_select_points_for_reorientation.m
 Please read comments in the matlab script. You can use this script to select a set of initial points on the subject and atlas to get an approximate alignment.
 
 
-![alt text](http://url/to/img.png)
+![alt text](digimouse_select_pts.png)
 
 
 
