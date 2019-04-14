@@ -5,7 +5,7 @@ This is implementation of our paper:
 
 A. A. Joshi, A. J. Chaudhari, C. Li, J. Dutta, S. R. Cherry, D. W. Shattuck, A. W. Toga and R. M. Leahy, DigiWarp: a method for deformable mouse atlas warping to surface topographic data, Physics in Medicine and Biology, 55(20), 6197-6214.[link](http://dx.doi.org/10.1088/0031-9155/55/20/011)
 
-![Digiwarp](digiwarp.jpg)
+<img src="digiwarp.jpg"  height="200">
 
 
 * Start by downloading Digimouse atlas: [Download Digimouse Atlas](https://neuroimage.usc.edu/neuro/Digimouse).
@@ -17,7 +17,7 @@ A. A. Joshi, A. J. Chaudhari, C. Li, J. Dutta, S. R. Cherry, D. W. Shattuck, A. 
 Please read comments in the matlab script. You can use this script to select a set of initial points on the subject and atlas to get an approximate alignment.
 Here is a screenshot of point selection process:
 
-![selecting points](digimouse_select_pts.png)
+<img src="digimouse_select_pts.png" height =300>
 
 For points selection process, please check our paper above. 
 
