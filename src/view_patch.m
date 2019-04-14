@@ -14,4 +14,5 @@ FV.vertices=FV1.vertices;FV.faces=FV1.faces;
 nVertices = size(FV.vertices,1);
 hpatch = patch(FV,'FaceColor','interp','EdgeColor','none','FaceVertexCData',ones(nVertices,3)*0.9,'faceAlpha',1); %plot surface        
 lighting gouraud
+material dull
 set(gcf,'color','white'); light

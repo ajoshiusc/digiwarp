@@ -1,4 +1,4 @@
-function surf_atlas=assymetric_L2_surf_matching(surf_atlas,surf_sub)
+function surf_atlas=assymetric_L2_surf_matching(surf_atlas,surf_sub_vertices)
 
 
 step_size=.05;
@@ -11,18 +11,18 @@ figure;
     set(gca,'xlim',[0 120]);axis equal;
     h=patch(surf_atlas,'facecolor','g','edgecolor','none','facealpha',0.2);hold on;axis equal;axis off;camlight;drawnow;
 %patch(surf_sub,'facecolor','r','edgecolor','none','facealpha',0.2);drawnow;axis off;
-%plot3(surf_sub.vertices(:,1),surf_sub.vertices(:,2),surf_sub.vertices(:,3),'.r');
-    plot3(surf_sub.vertices(:,1),surf_sub.vertices(:,2),surf_sub.vertices(:,3),'.r','MarkerSize',2.0);
+%plot3(surf_sub_vertices(:,1),surf_sub_vertices(:,2),surf_sub_vertices(:,3),'.r');
+    plot3(surf_sub_vertices(:,1),surf_sub_vertices(:,2),surf_sub_vertices(:,3),'.r','MarkerSize',2.0);
 
 for kk=1:150
 tic
-    k=dsearchn(surf_atlas.vertices,surf_sub.vertices);
+    k=dsearchn(surf_atlas.vertices,surf_sub_vertices);
 toc
 %k is an index into atlas surface
 
     [vec_atlas_pts,ind]=unique(k);
 %put edge length penalty
-    vec_atlas2sub=surf_sub.vertices(ind,:)-surf_atlas.vertices(vec_atlas_pts,:);
+    vec_atlas2sub=surf_sub_vertices(ind,:)-surf_atlas.vertices(vec_atlas_pts,:);
 %vec=vec1(vec_pts,:);
 
 clear dat row col
@@ -52,8 +52,8 @@ clear dat row col
 %figure;
     h=patch(surf_atlas,'facecolor','g','edgecolor','none','facealpha',0.2);hold on;%axis equal;axis off;camlight;drawnow;
 %patch(surf_sub,'facecolor','r','edgecolor','none','facealpha',0.2);drawnow;axis off;
-%plot3(surf_sub.vertices(:,1),surf_sub.vertices(:,2),surf_sub.vertices(:,3),'.r');
- %   plot3(surf_sub.vertices(:,1),surf_sub.vertices(:,2),surf_sub.vertices(:,3),'.r','MarkerSize',2.0);
+%plot3(surf_sub_vertices(:,1),surf_sub_vertices(:,2),surf_sub_vertices(:,3),'.r');
+ %   plot3(surf_sub_vertices(:,1),surf_sub_vertices(:,2),surf_sub_vertices(:,3),'.r','MarkerSize',2.0);
   %  drawnow;axis off;drawnow;
 
   %  F(kk)=getframe;
