@@ -4,9 +4,9 @@
  
 This is implementation of our paper:
 
-Joshi AA, Chaudhari AJ, Li C, Dutta J, Cherry SR, Shattuck DW, Toga AW and Leahy RM, **DigiWarp: a method for deformable mouse atlas warping to surface topographic data**, Physics in Medicine and Biology, 55(20), 6197-6214.[link](http://dx.doi.org/10.1088/0031-9155/55/20/011)
+Joshi AA, Chaudhari AJ, Li C, Dutta J, Cherry SR, Shattuck DW, Toga AW and Leahy RM, *DigiWarp: a method for deformable mouse atlas warping to surface topographic data*, Physics in Medicine and Biology, 55(20), 6197-6214.[link](http://dx.doi.org/10.1088/0031-9155/55/20/011)
 
-Joshi AA, Chaudhari AJ, Li C, Shattuck DW, Dutta J, Leahy RM, Toga AW, **Posture Matching and Elastic Registration of a Mouse Atlas to Surface Topography Range Data.** ISBI 2009: 366-369. [link](https://doi.org/10.1109/ISBI.2009.5193060)
+Joshi AA, Chaudhari AJ, Li C, Shattuck DW, Dutta J, Leahy RM, Toga AW, *Posture Matching and Elastic Registration of a Mouse Atlas to Surface Topography Range Data*, ISBI 2009: 366-369. [link](https://doi.org/10.1109/ISBI.2009.5193060)
 
 <img src="imgs/digiwarp.jpg"  height="200">
 
