@@ -24,12 +24,14 @@ The screenshot below shows the result of ICP.
 
 * If the previous script does not work and the atlas and subject pointsets are not in alignment after running the script, you can try `main_select_points_for_reorientation.m`.
 
-Please read comments in the matlab script. You can use this script to select a set of initial points on the subject and atlas to get an approximate alignment.
+Please read comments in the matlab script. You can use this script to select a set of initial points on the subject and atlas to get an approximate alignment. There is a `select3dtool.m` in `src` directory which might be useful.
 Here is a screenshot of point selection process:
 
 <img src="imgs/digimouse_select_pts.png" height =300>
 
 For points selection process, please check our paper above. 
+
+-------
 
 * Then run `main_digiwarp.m` script. Make sure that all the variables in this script are properly initialized to the desired values.
 This script will run for some time (~30 min) and generate the outputs in the output directory that you configured in the main script. The output will be warped volume and warped tetrahedral mesh saved in ANALYZE (img/hdr) and .mat format respectively.
