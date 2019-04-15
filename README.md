@@ -1,23 +1,32 @@
 
  README
- ----------
+ ---------- 
+ 
 This is implementation of our paper:
 
 A. A. Joshi, A. J. Chaudhari, C. Li, J. Dutta, S. R. Cherry, D. W. Shattuck, A. W. Toga and R. M. Leahy, DigiWarp: a method for deformable mouse atlas warping to surface topographic data, Physics in Medicine and Biology, 55(20), 6197-6214.[link](http://dx.doi.org/10.1088/0031-9155/55/20/011)
 
-<img src="digiwarp.jpg"  height="200">
+<img src="imgs/digiwarp.jpg"  height="200">
 
 
 * Start by downloading Digimouse atlas: [Download Digimouse Atlas](https://neuroimage.usc.edu/neuro/Digimouse).
 
-* There are 2 main scripts.
-`main_select_points_for_reorientation.m` and `main_digiwarp.m`
+* There are 3 main scripts.
+`main_select_points_for_reorientation.m`, `main_ICP_reposition.m` and `main_digiwarp.m`. The two scripts `main_ICP_reposition.m` and `main_digiwarp.m` repositions the pointset or the atlas so that they are approximately aligned, or reoriented. The `main_digiwarp.m` script does the actual warping.
 
-* Start with `main_select_points_for_reorientation.m`.
+----------
+* Start with `main_ICP_reposition.m`. Please read comments in the main script. It will realign subject point cloud to match the atlas. If you have imaging data corresponding to the subject point cloud, you have to figure out a way to keep them in alignment. You can use the utilities in `src` folder.
+
+The screenshot below shows the result of ICP.
+<img src="imgs/ICP_results.png" height =300>
+-----------
+
+* If the previous script does not work and the atlas and subject pointsets are not in alignment after running the script, you can try `main_select_points_for_reorientation.m`.
+
 Please read comments in the matlab script. You can use this script to select a set of initial points on the subject and atlas to get an approximate alignment.
 Here is a screenshot of point selection process:
 
-<img src="digimouse_select_pts.png" height =300>
+<img src="imgs/digimouse_select_pts.png" height =300>
 
 For points selection process, please check our paper above. 
 
