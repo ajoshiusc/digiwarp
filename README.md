@@ -31,4 +31,8 @@ Here is a screenshot of point selection process:
 For points selection process, please check our paper above. 
 
 * Then run `main_digiwarp.m` script. Make sure that all the variables in this script are properly initialized to the desired values.
-This script will run for some time (~30 min) and generate the outputs in the output directory that you configured in the main script. The output will be warped volume and warped tetrahedral mesh.
+This script will run for some time (~30 min) and generate the outputs in the output directory that you configured in the main script. The output will be warped volume and warped tetrahedral mesh saved in ANALYZE (img/hdr) and .mat format respectively.
+
+Please cite our paper if you find this software useful.
+
+
