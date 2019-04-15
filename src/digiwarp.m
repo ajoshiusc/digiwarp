@@ -174,12 +174,12 @@ yd(v1_mask_ind)=disp_vec_mask(:,2);
 zd(v1_mask_ind)=disp_vec_mask(:,3);
 [x,y,z]=ind2sub(Msize,v1_mask_ind);
 x=reshape(x,Msize);y=reshape(y,Msize);z=reshape(z,Msize);
-xpxd=min(max(x+xd,1),Msize(2));
-ypyd=min(max(y+yd,1),Msize(1));
+xpxd=min(max(x+xd,1),Msize(1));
+ypyd=min(max(y+yd,1),Msize(2));
 zpzd=min(max(z+zd,1),Msize(3));
 vi.img=interp3(v1.img,ypyd,xpxd,zpzd,interp_method);
 vi.hdr=v1.hdr;
-avw_write(vi,fullfile(outdir,'warped_atlas.nii.gz'));
+avw_write(vi,fullfile(outdir,'warped_atlas'));
 
 %tetmesh.label=cond;
 plot_tet_label_mesh(tetmesh);

@@ -33,7 +33,7 @@ end
 opts.pad = 0;
 
 % Number of iterations for nonlinear warping
-opts.NIT=50;
+opts.NIT=1%50;
 
 % Use nearest neighbor for warping atlas 
 %labels. use linear or cubic to warp CT or other images
