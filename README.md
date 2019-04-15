@@ -1,11 +1,10 @@
 
  README
- ---------- 
+ -------------------- 
  
 This is implementation of our paper on DigiWarp referenced below. It implements a method for fitting a deformable mouse atlas to surface topographic range data acquired by an optical system. As an initialization procedure, we match the posture of the atlas to the posture of the mouse being imaged using landmark constraints. The asymmetric L(2) pseudo-distance between the atlas surface and the mouse surface is then minimized in order to register two data sets. A Laplacian prior is used to ensure smoothness of the surface warping field. Once the atlas surface is normalized to match the range data, the internal anatomy is transformed using elastic energy minimization.
 
 <img src="imgs/digiwarp.jpg"  height="200">
-
 -----------
 
 The software is implemented in Matlab and is presented as is, without any explicit or implicit warranties. Please email Anand A Joshi(<ajoshi@usc.edu>) if you have any questions or need support.
@@ -34,6 +33,8 @@ For points selection process, please check our paper above.
 This script will run for some time (~30 min) and generate the outputs in the output directory that you configured in the main script. The output will be warped volume and warped tetrahedral mesh saved in ANALYZE (img/hdr) and .mat format respectively.
 
 Please cite our papers below if you find this software useful.
+
+--------------
 
 # References
 
