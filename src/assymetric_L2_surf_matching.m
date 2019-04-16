@@ -11,7 +11,7 @@ axis equal;
 h=patch(surf_atlas,'facecolor','g','edgecolor','none','facealpha',0.2);hold on;axis equal;axis off;camlight;drawnow;
 disp('plotting pointset');
 hhh= plot3(surf_sub_vertices(:,1),surf_sub_vertices(:,2),surf_sub_vertices(:,3),'.r','MarkerSize',5.0);drawnow;
-%hhh2= plot3(surf_sub_vertices(:,1),surf_sub_vertices(:,2),surf_sub_vertices(:,3),'.b','MarkerSize',5.0);drawnow;
+hhh2= plot3(surf_sub_vertices(:,1),surf_sub_vertices(:,2),surf_sub_vertices(:,3),'.b','MarkerSize',5.0);drawnow;
 disp('Performing surface to pointset matching. This will take some time.')
 disp('thank you for your patience.');
 for kk=1:NIT
