@@ -4,10 +4,10 @@ clc;clear all;close all;
 addpath(genpath('src'));
 
 %% These points are copied from main_select_points_for_reorientation
-sub_pts=[45.807,-6.034,17.65];
+sub_pts=[];%[45.807,-6.034,17.65];
         %84.40,-3.08, 16.03];
     
-atlas_pts=[18.8,34,18.4];
+atlas_pts=[]%[18.8,34,18.4];
     %19.24,17.38,16.8];
 
 
@@ -33,7 +33,7 @@ end
 opts.pad = 0;
 
 % Number of iterations for nonlinear warping
-opts.NIT=1%50;
+opts.NIT=50;
 
 % Use nearest neighbor for warping atlas 
 %labels. use linear or cubic to warp CT or other images

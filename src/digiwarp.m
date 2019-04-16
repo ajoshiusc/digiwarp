@@ -181,6 +181,8 @@ vi.img=interp3(v1.img,ypyd,xpxd,zpzd,interp_method);
 vi.hdr=v1.hdr;
 avw_write(vi,fullfile(outdir,'warped_atlas'));
 
+info=niftiinfo(fname1);
+niftiwrite(vi.img,fullfile(outdir,'warped_atlas_test.nii.gz'),info);
 %tetmesh.label=cond;
 plot_tet_label_mesh(tetmesh);
 title('Warped atlas');
